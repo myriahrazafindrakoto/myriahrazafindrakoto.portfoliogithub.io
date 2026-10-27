@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Myriah Razafindrakoto</title>
+    <!-- Icônes FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Police Google Fonts (Poppins pour un look moderne) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- VARIABLES & RESET --- */
+        :root {
+            --bg-dark: #0f172a; /* Bleu nuit très foncé */
+            --bg-card: #1e293b; /* Bleu gris pour les cartes */
+            --primary: #6366f1; /* Violet/Bleu indigo */
+            --secondary: #06b6d4; /* Cyan pour les accents */
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --glow: 0 0 20px rgba(99, 102, 241, 0.4);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 15px rgba(99, 102, 241, 0.4); }
+            50% { box-shadow: 0 0 35px rgba(99, 102, 241, 0.8); }
+            100% { box-shadow: 0 0 15px rgba(99, 102, 241, 0.4); }
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* --- HEADER --- */
+        header {
+            text-align: center;
+            padding: 2rem 0;
+            animation: fadeIn 1s ease;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; /* Effet dégradé sur le texte */
+            letter-spacing: 1px;
+        }
+        
+        header p {
+            color: var(--text-muted);
+            font-weight: 400;
+            font-size: 1rem;
+            margin-top: 5px;
+        }
+
+        /* --- SECTION HERO (Accueil) --- */
+        #home-view {
+            display: flex;
+            flex-direction: row; /* Photo à gauche, boutons à droite */
+            justify-content: center; /* Centre le tout horizontalement */
+            align-items: center; /* Centre le tout verticalement */
+            gap: 4rem; /* Espace entre la photo et les boutons */
+            padding: 4rem 2rem;
+            min-height: 60vh;
+            animation: fadeIn 1.2s ease;
+            max-width: 900px; /* Limite la largeur pour ne pas s'étaler */
+            margin: 0 auto; /* Centre le bloc au milieu de la page */
+        }
+
+        .profile-pic {
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary);
+            animation: pulseGlow 3s infinite; /* Effet de halo animé */
+            /* Remplacez par votre photo */
+            background-color: #334155; 
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .btn {
+            position: relative;
+            padding: 1rem 3.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            background: transparent;
+            border: 2px solid var(--primary);
+            border-radius: 50px; /* Boutons arrondis "pill" */
+            cursor: pointer;
+            overflow: hidden;
+            transition: var(--transition);
+            z-index: 1;
+        }
+
+        /* Effet de remplissage au survol */
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 0%; height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .btn:hover::before { width: 100%; }
+        .btn:hover { border-color: transparent; box-shadow: var(--glow); transform: translateY(-3px); }
+
+        /* --- SECTIONS CACHÉES (Profil & Projets) --- */
+        .content-section {
+            display: none;
+            padding: 3rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.6s ease;
+        }
+
+        /* --- STYLE PROFIL --- */
+        .profil-container {
+            background: var(--bg-card);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .profil-container h2 { 
+            margin-bottom: 1.5rem; 
+            color: var(--secondary); 
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 1.5rem; 
+            margin-top: 2.5rem; 
+        }
+        
+        .info-box { 
+            background: rgba(255,255,255,0.03); 
+            padding: 1.5rem; 
+            border-radius: 12px; 
+            border-left: 4px solid var(--primary);
+            transition: var(--transition);
+        }
+        .info-box:hover { transform: translateX(5px); background: rgba(255,255,255,0.06); }
+        .info-box h3 { font-size: 1.1rem; margin-bottom: 0.8rem; color: var(--text-main); }
+        .info-box p, .info-box li { color: var(--text-muted); font-size: 0.95rem; }
+        .info-box ul { list-style-position: inside; }
+
+        /* --- STYLE PROJETS (Grille) --- */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            padding: 2.5rem 1.5rem;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+        .project-card:hover::after { transform: scaleX(1); }
+
+        .project-card i {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.2rem;
+            transition: var(--transition);
+        }
+        .project-card:hover i { transform: scale(1.1) rotate(5deg); }
+
+        .project-card h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+        .project-card p { font-size: 0.9rem; color: var(--text-muted); }
+
+        /* --- MODALE (Fenêtre pop-up projet) --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px); /* Effet verre dépoli */
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-content {
+            background: var(--bg-card);
+            width: 100%;
+            max-width: 700px;
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: zoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+
+        /* Barre de défilement customisée */
+        .modal-content::-webkit-scrollbar { width: 8px; }
+        .modal-content::-webkit-scrollbar-track { background: var(--bg-dark); border-radius: 10px; }
+        .modal-content::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+        .close-btn {
+            position: absolute;
+            top: 1.2rem; right: 1.5rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: var(--transition);
+            line-height: 1;
+        }
+        .close-btn:hover { color: #ef4444; transform: rotate(90deg); }
+
+        .modal-content h2 { 
+            color: var(--secondary); 
+            margin-bottom: 1rem; 
+            font-size: 1.8rem;
+        }
+        
+        .modal-content p { margin-bottom: 1rem; color: var(--text-muted); }
+        .modal-content strong { color: var(--text-main); }
+
+        .tech-tags { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 1.2rem 0; }
+        .tech-tags span {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--primary);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        .modal-img {
+            width: 100%;
+            max-width: 400px; /* <--- C'est ici qu'on réduit la taille ! */
+            height: auto;
+            display: block;   /* Permet de centrer l'image */
+            margin: 0 auto 1.5rem auto; /* Centre l'image horizontalement */
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Ajoute une petite ombre pour le style */
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            margin-top: auto;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            background: rgba(30, 41, 59, 0.5);
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        footer a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+        footer a:hover { 
+            color: var(--primary); 
+            transform: translateY(-5px);
+            text-shadow: var(--glow);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            #home-view { flex-direction: column; gap: 3rem; text-align: center; }
+            .info-grid { grid-template-columns: 1fr; }
+            header h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- EN-TÊTE -->
+    <header>
+        <h1>Stage en Informatique · Développement Full-Stack</h1>
+        <p>RAZAFINDRAKOTO Myriah Josée Alvina</p>
+    </header>
+
+    <!-- PAGE D'ACCUEIL -->
+    <main id="home-view">
+        <!-- Remplacez le src par le chemin de votre photo -->
+        <img src="myriah photo 1.jpg" alt="Photo de Myriah" class="profile-pic">
+        
+        <div class="hero-buttons">
+            <button class="btn" onclick="showSection('profil')">PROFIL</button>
+            <button class="btn" onclick="showSection('projets')">PROJETS</button>
+            <!-- BOUTON CV -->
+            <a href="CV_Myriah.pdf" download class="btn" style="text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 10px;">
+                <i class="fas fa-download"></i> TÉLÉCHARGER MON CV
+            </a>
+
+            <!-- NOUVEAU BOUTON : LETTRE DE MOTIVATION -->
+            <a href="Lettre de motivation Myriah.pdf" download class="btn" style="text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 10px; background: var(--secondary); border-color: var(--secondary);">
+                <i class="fas fa-envelope-open-text"></i> MA LETTRE DE MOTIVATION
+            </a>
+        </div>
+        </div>
+    </main>
+
+    <!-- SECTION PROFIL -->
+    <section id="profil" class="content-section">
+        <div class="profil-container">
+            <h2><i class="fas fa-user-astronaut"></i> Mon Profil</h2>
+            <p style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 1rem;"><strong>Objectif :</strong> Stage de 3 mois en développement Full-Stack.</p>
+            <p>Étudiante en L3 d'informatique, je m'intéresse à la conception d'environnements web avec un accent sur le Front-end et la logique Back-end. Curieuse, j'explore différents concepts alliant créativité et analyse. Motivée et capable d'apprendre vite, je m'investis pleinement dans chaque mission.</p>
+            
+            <div class="info-grid">
+                <div class="info-box">
+                    <h3><i class="fas fa-graduation-cap" style="color: var(--secondary);"></i> Éducation</h3>
+                    <ul>
+                        <li>L1-L3 Informatique (ISPM) 2024-2026</li>
+                        <li>Bureautique (Word/Excel) 2023-2024</li>
+                        <li>Baccalauréat série D (2023)</li>
+                    </ul>
+                </div>
+                <div class="info-box">
+                    <h3><i class="fas fa-language" style="color: var(--secondary);"></i> Langues</h3>
+                    <ul>
+                        <li>Malagasy (Maternelle)</li>
+                        <li>Français (Assez bien)</li>
+                        <li>Anglais & Espagnol (Notions)</li>
+                    </ul>
+                </div>
+                <div class="info-box">
+                    <h3><i class="fas fa-heart" style="color: var(--secondary);"></i> Centres d'intérêt</h3>
+                    <p>Musique</p>
+                </div>
+                <div class="info-box">
+                    <h3><i class="fas fa-code" style="color: var(--secondary);"></i> Compétences</h3>
+                    <p>Langages :Python, TypeScript, JS, PHP, HTML/CSS, Java, C#,C,Flutter/Dart.</p>
+                    <p>Outils : Visual Studio Code,SQL (MariaDB)</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <button class="btn" onclick="goHome()">Retour</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION PROJETS -->
+    <section id="projets" class="content-section">
+        <h2 style="text-align: center; color: var(--secondary); margin-bottom: 0.5rem; font-size: 2rem;">Mes Projets</h2>
+        <p style="text-align: center; margin-bottom: 2.5rem; color: var(--text-muted);">Cliquez sur une carte pour voir les détails.</p>
+        
+        <div class="projects-grid">
+            <!-- Projet 1 -->
+            <div class="project-card" onclick="openModal('modal1')">
+                <i class="fas fa-utensils"></i>
+                <h3>Kaly du coin</h3>
+                <p>Site de menus (2026)</p>
+            </div>
+            <!-- Projet 2 -->
+            <div class="project-card" onclick="openModal('modal2')">
+                <i class="fas fa-calculator"></i>
+                <h3>Calculatrice</h3>
+                <p>Scientifique (2025)</p>
+            </div>
+            <!-- Projet 3 -->
+            <div class="project-card" onclick="openModal('modal3')">
+                <i class="fas fa-tasks"></i>
+                <h3>Gestion des tâches</h3>
+                <p>App mobile (2025)</p>
+            </div>
+            <!-- Projet 4 -->
+            <div class="project-card" onclick="openModal('modal4')">
+                <i class="fas fa-clock"></i>
+                <h3>Horloge digitale</h3>
+                <p>Web (2025)</p>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 3rem;">
+            <button class="btn" onclick="goHome()">Retour</button>
+        </div>
+    </section>
+
+    <!-- MODALES -->
+    
+    <!-- Modale Projet 1 -->
+    <div class="modal-overlay" id="modal1" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2>Kaly du coin</h2>
+            
+            <!-- Remplacez par votre vraie image -->
+            <img src="Capture liste categories (2).PNG" alt="Kaly du coin" class="modal-img">
+            <img src="Capture MENUS (2).PNG" alt="menus" class="modal-img">
+            <div class="tech-tags">
+                <span>PHP</span><span>MySQL</span><span>HTML</span><span>CSS</span>
+            </div>
+            <p><strong>Description :</strong> Conception globale d'un site de menus à deux espaces : une interface client pour consulter les menus, passer commande, et un espace administrateur pour gérer les menus et les commandes.</p>
+            <p><strong>Mon rôle :</strong> Conception de l'interface utilisateur  et développement de la logique back-end.</p>
+        </div>
+    </div>
+
+    <!-- Modale Projet 2 -->
+    <div class="modal-overlay" id="modal2" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2>Calculatrice dynamique</h2>
+            
+            <img src="Capture calculatrice dynamique (2).PNG" alt="Calculatrice" class="modal-img">
+            
+            <div class="tech-tags">
+                <span>HTML</span><span>CSS</span><span>JavaScript</span>
+            </div>
+            <p><strong>Description :</strong> Calculatrice scientifique pour navigateur, similaire à celle d'un téléphone, avec ses différentes méthodes de calcul.</p>
+            <p><strong>Mon rôle :</strong> Développement de la logique mathématique en JavaScript pur et design de l'interface.</p>
+        </div>
+    </div>
+
+    <!-- Modale Projet 3 -->
+    <div class="modal-overlay" id="modal3" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2>Gestion des tâches</h2>
+            
+            <img src="TACHE 2.jpg" alt="Gestion des tâches" class="modal-img">
+            
+            <div class="tech-tags">
+                <span>Flutter</span><span>Dart</span>
+            </div>
+            <p><strong>Description :</strong> Application mobile pour gérer ses activités : interface d'ajout de tâches et planification efficace pour prioriser selon la charge du quotidien.</p>
+            <p><strong>Mon rôle :</strong> Développement de l'interface utilisateur et gestion de l'état de l'application.</p>
+        </div>
+    </div>
+
+    <!-- Modale Projet 4 -->
+    <div class="modal-overlay" id="modal4" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2>Horloge digitale</h2>
+            
+            <img src="Capture horloge générale (2).PNG" alt="Horloge digitale" class="modal-img">
+            
+            <div class="tech-tags">
+                <span>HTML</span><span>CSS</span><span>JavaScript</span>
+            </div>
+            <p><strong>Description :</strong> Conception globale d'une horloge qui suit le fuseau horaire actuel via le navigateur.</p>
+            <p><strong>Mon rôle :</strong> Utilisation de l'API Date de JavaScript pour le calcul du temps réel.</p>
+        </div>
+    </div>
+
+    <!-- PIED DE PAGE -->
+    <footer>
+        <a href="mailto:myriahrazafindrakoto@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+        <a href="tel:0342664434" title="Téléphone"><i class="fas fa-phone"></i></a>
+        <!-- Remplacez les # par vos vrais liens -->
+        <a href="https://www.facebook.com/share/1H5iMHEUeu/" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+        <a href="https://myriahrazafindrakoto.github.io." target="_blank" title="Github"><i class="fab fa-github"></i></a>
+    </footer>
+
+    <!-- JAVASCRIPT (Inchangé, il gère la navigation) -->
+    <script>
+        function showSection(sectionId) {
+            document.getElementById('home-view').style.display = 'none';
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function goHome() {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+            document.getElementById('home-view').style.display = 'flex';
+            window.scrollTo(0, 0);
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(event) {
+            if (!event || event.target.classList.contains('modal-overlay') || event.target.classList.contains('close-btn')) {
+                const modals = document.querySelectorAll('.modal-overlay');
+                modals.forEach(modal => modal.classList.remove('active'));
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
+</body>
+</html>
